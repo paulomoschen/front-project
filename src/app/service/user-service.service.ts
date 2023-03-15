@@ -44,7 +44,9 @@ export class UserServiceService {
 
   private request(request: Observable<any>, sucesso: any, error: any) {
     request.pipe(catchError((err) => {
+      console.log(err);
       error(err);
+      
       throw err;
     })).subscribe((response) => {
       sucesso(response);

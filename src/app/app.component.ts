@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { UserServiceService } from './service/user-service.service';
-import {FormControl, Validators} from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -28,26 +28,24 @@ export class AppComponent {
   buscar() {
     this.requisicaoService.buscar('/funcionarios').then(response => {
       this.funcionarios = response;
-      console.log(response);
-      
+
       this.dataSource = new MatTableDataSource<Funcionario>(response);
     }).catch(err => console.log(err.message));
   }
 
 
   salvar() {
-    // if(this.funcionario.name || this.funcionario.email || this.funcionario.nis < 0){
-    //   alert('Preencha os campos obrigatórios!');
-    //   console.log("ow");
-      
-    //   return;
-    // }
     this.funcionario.email = this.email.value;
+    
+    if (!(this.funcionario.name) || !(this.funcionario.email) || this.funcionario.nis < 0) {
+      alert('Preencha os campos obrigatórios!');
+      return;
+    }
 
     this.requisicaoService.salvar('/funcionarios', this.funcionario).then(_ => {
       this.voltar();
       alert('Salvo com sucesso!');
-    }).catch(response => alert(response.message));
+    }).catch(response => alert(response.retorno));
   }
 
   editar() {
